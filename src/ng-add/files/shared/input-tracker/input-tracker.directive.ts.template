@@ -1,0 +1,42 @@
+import {
+  Directive,
+  HostListener,
+  ElementRef,
+  Input,
+  Optional
+} from '@angular/core';
+import { NgControl } from '@angular/forms';
+import { DivolteService } from '../../services/divolte.service';
+
+@Directive({
+  selector: '[appInputTracker]'
+})
+export class InputTrackerDirective {
+  @Input() eventName: 'next';
+  @Input() fieldValuePreprocessor: (input: string) => string;
+  eventClick = false;
+
+  @HostListener('click', ['$event'])
+  onClick(event: any) {
+    switch (this.eventName) {
+      case 'next':
+        this.signalEvent('click', this.eventName);
+    }
+    this.eventClick = true;
+  }
+
+  constructor(
+    @Optional() private controlDir: NgControl,
+    private elementRef: ElementRef,
+    private divolteService: DivolteService
+  ) {}
+
+  signalEvent(eventName: string, value: any) {
+    this.divolteService.signalEvent(eventName, {
+      value: this.fieldValuePreprocessor
+        ? this.fieldValuePreprocessor(value)
+        : value,
+      id: this.elementRef.nativeElement.dataset.trackingId
+    });
+  }
+}

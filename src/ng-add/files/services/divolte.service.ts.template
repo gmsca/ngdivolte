@@ -1,0 +1,47 @@
+import { Injectable, NgZone } from '@angular/core';
+import { environment } from '../../environments/environment';
+
+declare var divolte: any;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DivolteService {
+  enableDivolte = environment.enableClickstream;
+  errorCount = 0;
+  constructor(private zone: NgZone) {}
+
+  parseHttp(event: any): object {
+    return {
+      id: event.id,
+      xhrUrl: event.value.xhrUrl,
+      xhrHttpCode: event.value.xhrHttpCode,
+      xhrRequest: event.value.xhrRequest,
+      xhrResponse: event.value.xhrResponse,
+      xhrDuration: event.value.xhrDuration,
+      xhrMethod: event.value.xhrMethod,
+      xhrId: event.value.xhrId
+    };
+  }
+
+  signalEvent(eventName: string, eventValue: object) {
+    this.zone.runOutsideAngular(() => {
+      try {
+        if (this.enableDivolte && this.errorCount < 10) {
+          if (eventName === 'http') {
+            eventValue = this.parseHttp(eventValue);
+          }
+
+          if (!environment.production) {
+            console.log('divolte', eventName, eventValue);
+          } else {
+            divolte.signal(eventName, eventValue);
+          }
+        }
+      } catch (error) {
+        console.log('error:', error.message);
+        this.errorCount++;
+      }
+    });
+  }
+}
