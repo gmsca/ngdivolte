@@ -1,6 +1,6 @@
 import { SchematicsException, Tree } from '@angular-devkit/schematics';
-import { addImportToModule } from '@schematics/angular/utility/ast-utils';
-import { InsertChange } from '@schematics/angular/utility/change';
+import { addImportToModule } from 'schematics-utilities/dist/angular/ast-utils';
+import { InsertChange } from 'schematics-utilities/dist/angular/change';
 import { getSourceFile } from 'schematics-utilities/dist/material/ast';
 import { readIntoSourceFile } from 'schematics-utilities/dist/material/build-component';
 import { tsquery } from '@phenomnomnominal/tsquery';

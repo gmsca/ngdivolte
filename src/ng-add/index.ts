@@ -1,6 +1,6 @@
-import { getWorkspace } from '@schematics/angular/utility/config';
-import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
-import { getPackageJsonDependency } from '@schematics/angular/utility/dependencies';
+import { getWorkspace } from 'schematics-utilities/dist/angular/config';
+import { getAppModulePath } from 'schematics-utilities/dist/angular/ng-ast-utils';
+import { getPackageJsonDependency } from 'schematics-utilities/dist/angular/dependencies';
 import { getProjectFromWorkspace } from 'schematics-utilities/dist/material/get-project';
 import { Schema } from './schema';
 import {
